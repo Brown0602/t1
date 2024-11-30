@@ -8,18 +8,31 @@ public class TaskDTO {
     private Long id;
     private String title;
     private String description;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     private User user;
 
     public String getTitle() {
         return title;
     }
 
-    public TaskDTO(Long id, String title, String description, User user) {
+    public TaskDTO(Long id, String title, String description, String status, User user) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.status = status;
         this.user = user;
     }
+
+
 
     public Long getId() {
         return id;
@@ -35,6 +48,7 @@ public class TaskDTO {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
                 ", user=" + user +
                 '}';
     }

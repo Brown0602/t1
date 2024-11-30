@@ -1,6 +1,5 @@
 package com.tuaev.task.aspect;
 
-import com.tuaev.task.dto.TaskDTO;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -37,9 +36,12 @@ public class LoggingAspect {
         return o;
     }
 
-    @AfterReturning(pointcut = "@annotation(com.tuaev.task.annotation.ResultHandler)", returning = "task")
-    public void resultReturning(TaskDTO task) {
-        logger.info("Добавлена новая задача:\n{}", task);
+    @AfterReturning(pointcut = "@annotation(com.tuaev.task.annotation.ResultHandler)", returning = "o")
+    public void resultReturning(JoinPoint joinPoint, Object o) {
+        logger.info("Метод {} у класса {} вернул следующий результат: {}",
+                joinPoint.getSignature().getName(),
+                joinPoint.getTarget().getClass(),
+                o);
     }
 
     @AfterThrowing(pointcut = "@annotation(com.tuaev.task.annotation.LogException)", throwing = "throwable")
