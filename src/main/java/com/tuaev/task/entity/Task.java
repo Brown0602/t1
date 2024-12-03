@@ -27,16 +27,6 @@ public class Task {
     public Task() {
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", user=" + user +
-                '}';
-    }
-
     public Long getId() {
         return id;
     }

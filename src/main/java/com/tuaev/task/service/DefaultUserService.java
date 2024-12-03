@@ -17,6 +17,6 @@ public class DefaultUserService implements UserService {
 
     @Override
     public Optional<User> findById(Long id) {
-        return userRepository.findById(1L);
+        return userRepository.findById(id);
     }
 }

@@ -1,13 +1,11 @@
 package com.tuaev.task.config;
 
 import com.tuaev.task.annotation.LogBefore;
-import com.tuaev.task.annotation.LogMethod;
 import com.tuaev.task.entity.User;
 import com.tuaev.task.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.List;
 
 @Configuration

@@ -1,19 +1,18 @@
 package com.tuaev.task.service;
 
 import com.tuaev.task.dto.TaskDTO;
-import com.tuaev.task.entity.Task;
 
 import java.util.List;
 
 public interface TaskService {
 
-    Task save(TaskDTO taskDTO);
+    TaskDTO save(TaskDTO taskDTO);
 
-    List<Task> findAll();
+    List<TaskDTO> findAll();
 
-    Task findById(Long id);
+    TaskDTO findById(Long id);
 
-    Task updateById(Long id, TaskDTO taskDTO);
+    TaskDTO updateById(Long id, TaskDTO taskDTO);
 
     void deleteById(Long id);
 }
