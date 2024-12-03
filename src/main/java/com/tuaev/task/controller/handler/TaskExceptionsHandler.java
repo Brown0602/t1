@@ -13,7 +13,7 @@ public class TaskExceptionsHandler {
     @ExceptionHandler(NotFoundTaskException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String notFoundCoffeeMachineException(NotFoundTaskException exception){
+    public String notFoundCoffeeMachineException(NotFoundTaskException exception) {
         return exception.getMessage();
     }
 }

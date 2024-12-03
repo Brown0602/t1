@@ -1,6 +1,6 @@
 package com.tuaev.task.exception;
 
-public class NotFoundTaskException extends RuntimeException{
+public class NotFoundTaskException extends RuntimeException {
     public NotFoundTaskException() {
         super();
     }

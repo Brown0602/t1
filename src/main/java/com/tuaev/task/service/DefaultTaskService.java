@@ -11,11 +11,12 @@ import com.tuaev.task.exception.NotFoundTaskException;
 import com.tuaev.task.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DefaultTaskService implements TaskService{
+public class DefaultTaskService implements TaskService {
 
     private final TaskRepository taskRepository;
     private final UserService userService;
@@ -31,7 +32,7 @@ public class DefaultTaskService implements TaskService{
     @Override
     public Task save(TaskDTO taskDTO) {
         Optional<User> user = userService.findById(1L);
-        return  taskRepository.save(new Task(taskDTO.getTitle(), taskDTO.getDescription(), user.get()));
+        return taskRepository.save(new Task(taskDTO.getTitle(), taskDTO.getDescription(), user.get()));
     }
 
     @LogBefore
@@ -44,14 +45,14 @@ public class DefaultTaskService implements TaskService{
     @LogException
     @Override
     public Task findById(Long id) {
-        return taskRepository.findById(id).orElseThrow(()-> new NotFoundTaskException("Задача не найдена"));
+        return taskRepository.findById(id).orElseThrow(() -> new NotFoundTaskException("Задача не найдена"));
     }
 
     @LogMethod
     @LogException
     @Override
     public Task updateById(Long id, TaskDTO taskDTO) {
-        Task task = taskRepository.findById(id).orElseThrow(()-> new NotFoundTaskException("Задача не найдена"));
+        Task task = findById(id);
         task.setTitle(taskDTO.getTitle());
         task.setDescription(taskDTO.getDescription());
         return taskRepository.save(task);
@@ -61,10 +62,5 @@ public class DefaultTaskService implements TaskService{
     @Override
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
-    }
-
-    @Override
-    public String toString() {
-        return "DefaultTaskService";
     }
 }

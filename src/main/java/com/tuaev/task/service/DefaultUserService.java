@@ -3,10 +3,11 @@ package com.tuaev.task.service;
 import com.tuaev.task.entity.User;
 import com.tuaev.task.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
-public class DefaultUserService implements UserService{
+public class DefaultUserService implements UserService {
 
     private final UserRepository userRepository;
 

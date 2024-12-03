@@ -15,35 +15,36 @@ public class LoggingAspect {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Pointcut("@annotation(com.tuaev.task.annotation.LogMethod)")
-    public void log(){}
+    public void logging() {
+    }
 
     @Before("@annotation(com.tuaev.task.annotation.LogBefore)")
-    public void beforeMethodLog(JoinPoint joinPoint){
+    public void beforeMethodLog(JoinPoint joinPoint) {
         logger.info("Вызван метод {} у класса {} ", joinPoint.getSignature().getName(), joinPoint.getTarget());
     }
 
-    @Around("log()")
-    public Object logging1(ProceedingJoinPoint joinPoint) throws Throwable{
+    @Around("logging()")
+    public Object logMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         Object o;
         try {
             logger.info("Вызван метод {} у класса {} ", joinPoint.getSignature().getName(), joinPoint.getTarget());
             o = joinPoint.proceed();
         } catch (Throwable e) {
             throw e;
-        }finally {
+        } finally {
             logger.info("Метод {} у класса {} закончил свою работу", joinPoint.getSignature().getName(), joinPoint.getTarget());
         }
         return o;
     }
 
     @AfterReturning(pointcut = "@annotation(com.tuaev.task.annotation.ResultHandler)", returning = "task")
-    public void resultReturning(Task task){
+    public void resultReturning(Task task) {
         logger.info("Добавлена новая задача:\n{}", task);
     }
 
     @AfterThrowing(pointcut = "@annotation(com.tuaev.task.annotation.LogException)", throwing = "throwable")
-    public void taskException(JoinPoint joinPoint, Throwable throwable){
-        logger.info("Вызвано исключение {} у класса {} метода {}", throwable.getClass().getName(),
+    public void taskException(JoinPoint joinPoint, Throwable throwable) {
+        logger.info("Вызвано исключение {} у класса {} метода {}", throwable.getClass().getSimpleName(),
                 joinPoint.getTarget(), joinPoint.getSignature().getName());
     }
 }

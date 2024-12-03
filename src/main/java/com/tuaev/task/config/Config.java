@@ -1,5 +1,6 @@
 package com.tuaev.task.config;
 
+import com.tuaev.task.annotation.LogBefore;
 import com.tuaev.task.annotation.LogMethod;
 import com.tuaev.task.entity.User;
 import com.tuaev.task.repository.UserRepository;
@@ -12,13 +13,10 @@ import java.util.List;
 @Configuration
 public class Config {
 
-    @LogMethod
+
+    @LogBefore
     @Bean
-    public CommandLineRunner addEntity(UserRepository userRepository) {
-        return o -> userRepository.saveAll(
-                List.of(
-                        new User("Владислав", "Туаев", 24)
-                )
-        );
+    public CommandLineRunner addEntityUser(UserRepository userRepository) {
+        return o -> userRepository.saveAll(List.of(new User("Владислав", "Туаев", 24)));
     }
 }

@@ -1,6 +1,7 @@
 package com.tuaev.task.entity;
 
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Table(name = "users")
