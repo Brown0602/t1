@@ -59,6 +59,7 @@ public class DefaultTaskService implements TaskService {
 
     @LogMethod
     @LogException
+    @Transactional
     @Override
     public TaskDTO updateById(Long id, TaskDTO taskDTO) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundTaskException("Задача не найдена"));
