@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultNotificationService implements NotificationService{
+public class DefaultNotificationService implements NotificationService {
 
     private final JavaMailSender javaMailSender;
     @Value("${mail.myEmail}")
@@ -21,12 +21,12 @@ public class DefaultNotificationService implements NotificationService{
 
     @KafkaListener(topics = "task_status", groupId = "status")
     @Override
-    public void sendMessage(ConsumerRecord<String, String> consumerRecord){
+    public void sendMessage(ConsumerRecord<String, String> consumerRecord) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setFrom(email);
-        message.setSubject("Уведомление об изменения статуса задачи");
-        message.setText("Изменился статус вашей задачи: " + consumerRecord.value());
+        message.setSubject("Уведомление об статусе задачи");
+        message.setText("Ваш статус задачи: " + consumerRecord.value());
         javaMailSender.send(message);
     }
 }

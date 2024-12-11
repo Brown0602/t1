@@ -1,6 +1,6 @@
 package com.tuaev.task.exception;
 
-public class NotFoundUserException extends RuntimeException{
+public class NotFoundUserException extends RuntimeException {
     public NotFoundUserException() {
         super();
     }

@@ -16,7 +16,7 @@ public enum TaskStatus {
         return value;
     }
 
-    public static List<TaskStatus> getAllStatus(){
+    public static List<TaskStatus> getAllStatus() {
         return List.of(TaskStatus.CREATED, TaskStatus.AT_WORK, TaskStatus.FINISHED);
     }
 }

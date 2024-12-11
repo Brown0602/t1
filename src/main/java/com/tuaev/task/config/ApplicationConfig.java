@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
 import java.util.List;
 
 @PropertySource("data_mail.properties")
@@ -32,7 +33,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public JavaMailSender javaMailSender(){
+    public JavaMailSender javaMailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setProtocol(protocol);
         javaMailSender.setHost(host);

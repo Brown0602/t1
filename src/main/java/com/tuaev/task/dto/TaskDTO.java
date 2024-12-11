@@ -33,7 +33,6 @@ public class TaskDTO {
     }
 
 
-
     public Long getId() {
         return id;
     }

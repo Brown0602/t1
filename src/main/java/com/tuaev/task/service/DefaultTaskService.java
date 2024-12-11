@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -38,9 +39,12 @@ public class DefaultTaskService implements TaskService {
     @Transactional
     @Override
     public TaskDTO save(TaskDTO taskDTO) {
-        User user = userService.findById(1L).orElseThrow(() -> new NotFoundUserException("Пользователь не найден"));
+        User user = userService.findById(1L);
         taskDTO.setStatus(TaskStatus.CREATED.getValue());
-        return TaskDTOMapper.toTaskDTO(taskRepository.save(TaskMapper.toTask(taskDTO, user)));
+        Task task = TaskMapper.toTask(taskDTO, user);
+        taskRepository.save(task);
+        kafkaTemplate.send(new ProducerRecord<>("task_status", String.valueOf(task.getId()), taskDTO.getStatus()));
+        return TaskDTOMapper.toTaskDTO(task);
     }
 
     @LogBefore
