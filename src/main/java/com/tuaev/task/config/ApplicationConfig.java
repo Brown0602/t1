@@ -14,7 +14,7 @@ import java.util.List;
 
 @PropertySource("data_mail.properties")
 @Configuration
-public class Config {
+public class ApplicationConfig {
 
     @Value("${mail.transport.protocol}")
     private String protocol;

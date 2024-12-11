@@ -22,12 +22,11 @@ public class DefaultNotificationService implements NotificationService{
     @KafkaListener(topics = "task_status", groupId = "status")
     @Override
     public void sendMessage(ConsumerRecord<String, String> consumerRecord){
-
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setFrom(email);
-        message.setSubject("Уведомление о изменения статуса задачи");
-        message.setText(consumerRecord.value());
+        message.setSubject("Уведомление об изменения статуса задачи");
+        message.setText("Изменился статус вашей задачи: " + consumerRecord.value());
         javaMailSender.send(message);
     }
 }
