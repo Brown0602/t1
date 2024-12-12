@@ -1,5 +1,6 @@
 package com.tuaev.task.service;
 
+import com.tuaev.task.annotation.LogKafkaMethod;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -18,7 +19,7 @@ public class DefaultNotificationService implements NotificationService {
         this.javaMailSender = javaMailSender;
     }
 
-
+    @LogKafkaMethod
     @KafkaListener(topics = "task_status", groupId = "status")
     @Override
     public void sendMessage(ConsumerRecord<String, String> consumerRecord) {

@@ -8,15 +8,6 @@ import java.util.List;
 @Entity
 public class User {
 
-    public User(String userName, String lastName, int age) {
-        this.userName = userName;
-        this.lastName = lastName;
-        this.age = age;
-    }
-
-    public User() {
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -27,18 +18,17 @@ public class User {
     private String lastName;
     @Column(name = "age", nullable = false)
     private int age;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
-    }
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Task> tasks;
+
+    public User(String userName, String lastName, int age) {
+        this.userName = userName;
+        this.lastName = lastName;
+        this.age = age;
+    }
+
+    public User() {
+    }
 
     public Long getId() {
         return id;
@@ -70,5 +60,14 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

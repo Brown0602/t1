@@ -9,13 +9,11 @@ import com.tuaev.task.dto.TaskDTO;
 import com.tuaev.task.entity.Task;
 import com.tuaev.task.entity.User;
 import com.tuaev.task.exception.NotFoundTaskException;
-import com.tuaev.task.exception.NotFoundUserException;
 import com.tuaev.task.repository.TaskRepository;
 import com.tuaev.task.util.mapper.TaskDTOMapper;
 import com.tuaev.task.util.mapper.TaskMapper;
 import jakarta.transaction.Transactional;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,12 +23,12 @@ public class DefaultTaskService implements TaskService {
 
     private final TaskRepository taskRepository;
     private final UserService userService;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaProducerService kafkaProducerService;
 
-    public DefaultTaskService(TaskRepository taskRepository, UserService userService, KafkaTemplate<String, String> kafkaTemplate) {
+    public DefaultTaskService(TaskRepository taskRepository, UserService userService, KafkaProducerService kafkaProducerService) {
         this.taskRepository = taskRepository;
         this.userService = userService;
-        this.kafkaTemplate = kafkaTemplate;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
     @ResultHandler
@@ -43,7 +41,7 @@ public class DefaultTaskService implements TaskService {
         taskDTO.setStatus(TaskStatus.CREATED.getValue());
         Task task = TaskMapper.toTask(taskDTO, user);
         taskRepository.save(task);
-        kafkaTemplate.send(new ProducerRecord<>("task_status", String.valueOf(task.getId()), taskDTO.getStatus()));
+        kafkaProducerService.sendMessage(new ProducerRecord<>("task_status", String.valueOf(task.getId()), taskDTO.getStatus()));
         return TaskDTOMapper.toTaskDTO(task);
     }
 
@@ -58,8 +56,7 @@ public class DefaultTaskService implements TaskService {
     @LogException
     @Override
     public TaskDTO findById(Long id) {
-        return TaskDTOMapper.toTaskDTO(taskRepository.findById(id).orElseThrow(() ->
-                new NotFoundTaskException("Задача не найдена")));
+        return TaskDTOMapper.toTaskDTO(taskRepository.findById(id).orElseThrow(() -> new NotFoundTaskException("Задача не найдена")));
     }
 
     @LogMethod
@@ -67,19 +64,17 @@ public class DefaultTaskService implements TaskService {
     @Transactional
     @Override
     public TaskDTO updateById(Long id, TaskDTO taskDTO) {
-        isStatus(taskDTO);
+        checkStatus(taskDTO);
         Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundTaskException("Задача не найдена"));
         task.setTitle(taskDTO.getTitle());
         task.setDescription(taskDTO.getDescription());
         task.setStatus(taskDTO.getStatus());
-        taskRepository.save(task);
-        kafkaTemplate.send(new ProducerRecord<>("task_status", String.valueOf(task.getId()), taskDTO.getStatus()));
+        kafkaProducerService.sendMessage(new ProducerRecord<>("task_status", String.valueOf(task.getId()), taskDTO.getStatus()));
         return TaskDTOMapper.toTaskDTO(task);
     }
 
-    private void isStatus(TaskDTO taskDTO) {
-        if (TaskStatus.getAllStatus().stream().noneMatch(taskStatus ->
-                taskStatus.getValue().equals(taskDTO.getStatus()))) {
+    private void checkStatus(TaskDTO taskDTO) {
+        if (TaskStatus.getAllStatus().stream().noneMatch(taskStatus -> taskStatus.getValue().equals(taskDTO.getStatus()))) {
             throw new NotFoundTaskException("Данного статуса задачи не существует");
         }
     }

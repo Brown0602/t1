@@ -22,6 +22,23 @@ public class LoggingAspect {
         logger.info("Вызван метод {} у класса {} ", joinPoint.getSignature().getName(), joinPoint.getTarget());
     }
 
+    @Around("@annotation(com.tuaev.task.annotation.LogKafkaMethod)")
+    public Object messageAfterMethod(ProceedingJoinPoint joinPoint) {
+        Object o;
+        try {
+            logger.info("Вызван метод {} у класса {} ", joinPoint.getSignature().getName(), joinPoint.getTarget());
+            o = joinPoint.proceed();
+        } catch (Throwable e) {
+            logger.info("Метод {} у класса {} выбросил исключение: {} ",
+                    joinPoint.getSignature().getName(), joinPoint.getTarget(), e.getClass().getName());
+            throw new RuntimeException();
+        }finally {
+            logger.info("Метод {} у класса {} закончил свою работу. Success!",
+                    joinPoint.getSignature().getName(), joinPoint.getTarget());
+        }
+        return o;
+    }
+
     @Around("logging()")
     public Object logMethod(ProceedingJoinPoint joinPoint) throws Throwable {
         Object o;

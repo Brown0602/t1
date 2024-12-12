@@ -1,6 +1,5 @@
 package com.tuaev.task.dto;
 
-
 import com.tuaev.task.entity.User;
 
 public class TaskDTO {
@@ -9,20 +8,7 @@ public class TaskDTO {
     private String title;
     private String description;
     private String status;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     private User user;
-
-    public String getTitle() {
-        return title;
-    }
 
     public TaskDTO(Long id, String title, String description, String status, User user) {
         this.id = id;
@@ -32,7 +18,6 @@ public class TaskDTO {
         this.user = user;
     }
 
-
     public Long getId() {
         return id;
     }
@@ -41,23 +26,8 @@ public class TaskDTO {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "TaskDTO{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                ", user=" + user +
-                '}';
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
@@ -70,5 +40,32 @@ public class TaskDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskDTO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                ", user=" + user +
+                '}';
     }
 }
