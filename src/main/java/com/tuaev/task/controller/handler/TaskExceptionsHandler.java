@@ -1,5 +1,6 @@
 package com.tuaev.task.controller.handler;
 
+import com.tuaev.task.exception.NotFoundStatusException;
 import com.tuaev.task.exception.NotFoundTaskException;
 import com.tuaev.task.exception.NotFoundUserException;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,13 @@ public class TaskExceptionsHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public String notFoundUserException(NotFoundUserException exception) {
+        return exception.getMessage();
+    }
+
+    @ExceptionHandler(NotFoundStatusException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public String notFoundStatusException(NotFoundStatusException exception) {
         return exception.getMessage();
     }
 }

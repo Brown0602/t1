@@ -18,6 +18,7 @@ target/
 .mvn
 mvnw
 mvnw.cmd
+src/main/resources/data_mail.properties
 *.iws
 *.iml
 *.ipr
