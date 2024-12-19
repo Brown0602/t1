@@ -18,7 +18,7 @@ target/
 .mvn
 mvnw
 mvnw.cmd
-src/main/resources/data_mail.properties
+src/main/resources/application.properties
 *.iws
 *.iml
 *.ipr
@@ -35,3 +35,4 @@ build/
 
 ### VS Code ###
 .vscode/
+

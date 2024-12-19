@@ -1,5 +1,6 @@
 package com.tuaev.task.controller.handler;
 
+import com.tuaev.task.dto.ResponseDTO;
 import com.tuaev.task.exception.NotFoundStatusException;
 import com.tuaev.task.exception.NotFoundTaskException;
 import com.tuaev.task.exception.NotFoundUserException;
@@ -7,29 +8,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class TaskExceptionsHandler {
 
     @ExceptionHandler(NotFoundTaskException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String notFoundTaskException(NotFoundTaskException exception) {
-        return exception.getMessage();
+    public ResponseDTO notFoundTaskException(NotFoundTaskException exception) {
+        return new ResponseDTO(LocalDateTime.now(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NotFoundUserException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String notFoundUserException(NotFoundUserException exception) {
-        return exception.getMessage();
+    public ResponseDTO notFoundUserException(NotFoundUserException exception) {
+        return new ResponseDTO(LocalDateTime.now(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NotFoundStatusException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String notFoundStatusException(NotFoundStatusException exception) {
-        return exception.getMessage();
+    public ResponseDTO notFoundStatusException(NotFoundStatusException exception) {
+        return new ResponseDTO(LocalDateTime.now(), exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

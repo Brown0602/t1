@@ -1,10 +1,6 @@
 package com.tuaev.task.service;
 
 import com.tuaev.task.TaskStatus;
-import com.tuaev.task.annotation.LogBefore;
-import com.tuaev.task.annotation.LogException;
-import com.tuaev.task.annotation.LogMethod;
-import com.tuaev.task.annotation.ResultHandler;
 import com.tuaev.task.dto.TaskDTO;
 import com.tuaev.task.entity.Task;
 import com.tuaev.task.entity.User;
@@ -31,9 +27,6 @@ public class DefaultTaskService implements TaskService {
         this.kafkaProducerService = kafkaProducerService;
     }
 
-    @ResultHandler
-    @LogMethod
-    @LogException
     @Transactional
     @Override
     public TaskDTO save(TaskDTO taskDTO) {
@@ -45,22 +38,20 @@ public class DefaultTaskService implements TaskService {
         return TaskDTOMapper.toTaskDTO(task);
     }
 
-    @LogBefore
+
     @Override
     public List<TaskDTO> findAll() {
         List<Task> tasks = taskRepository.findAll();
         return tasks.stream().map(TaskDTOMapper::toTaskDTO).toList();
     }
 
-    @LogMethod
-    @LogException
+
     @Override
     public TaskDTO findById(Long id) {
         return TaskDTOMapper.toTaskDTO(taskRepository.findById(id).orElseThrow(() -> new NotFoundTaskException("Задача не найдена")));
     }
 
-    @LogMethod
-    @LogException
+
     @Transactional
     @Override
     public TaskDTO updateById(Long id, TaskDTO taskDTO) {
@@ -79,7 +70,7 @@ public class DefaultTaskService implements TaskService {
         }
     }
 
-    @LogBefore
+
     @Override
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
