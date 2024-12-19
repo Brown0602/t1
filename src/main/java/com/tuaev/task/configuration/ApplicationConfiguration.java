@@ -1,4 +1,4 @@
-package com.tuaev.task.config;
+package com.tuaev.task.configuration;
 
 import com.tuaev.task.entity.User;
 import com.tuaev.task.repository.UserRepository;
@@ -11,11 +11,11 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.List;
 
 @Configuration
-public class ApplicationConfig {
+public class ApplicationConfiguration {
 
-    private final MailConfiguration mailConfiguration;
+    private final MailConfigurationProperties mailConfiguration;
 
-    public ApplicationConfig(MailConfiguration mailConfiguration) {
+    public ApplicationConfiguration(MailConfigurationProperties mailConfiguration) {
         this.mailConfiguration = mailConfiguration;
     }
 

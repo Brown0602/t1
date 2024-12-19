@@ -1,11 +1,11 @@
-package com.tuaev.task.config;
+package com.tuaev.task.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "mail")
-public class MailConfiguration {
+public class MailConfigurationProperties {
 
     private String protocol;
     private String host;
