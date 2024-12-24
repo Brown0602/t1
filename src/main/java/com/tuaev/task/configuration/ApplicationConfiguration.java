@@ -1,5 +1,7 @@
 package com.tuaev.task.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tuaev.task.entity.User;
 import com.tuaev.task.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -22,6 +24,13 @@ public class ApplicationConfiguration {
     @Bean
     public CommandLineRunner addEntityUser(UserRepository userRepository) {
         return o -> userRepository.saveAll(List.of(new User("Владислав", "Туаев", 24)));
+    }
+
+    @Bean
+    public ObjectMapper objectMapper(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper;
     }
 
     @Bean

@@ -1,7 +1,5 @@
 package com.tuaev.task.dto;
 
-import com.tuaev.task.entity.User;
-
 public class TaskDTO {
 
     private Long id;

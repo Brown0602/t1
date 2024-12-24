@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @ControllerAdvice
 public class TaskExceptionsHandler {
@@ -17,18 +17,18 @@ public class TaskExceptionsHandler {
     @ExceptionHandler(NotFoundTaskException.class)
     @ResponseBody
     public ResponseDTO notFoundTaskException(NotFoundTaskException exception) {
-        return new ResponseDTO(LocalDateTime.now(), exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseDTO(LocalDate.now(), exception.getMessage(), HttpStatus.NOT_FOUND.value());
     }
 
     @ExceptionHandler(NotFoundUserException.class)
     @ResponseBody
     public ResponseDTO notFoundUserException(NotFoundUserException exception) {
-        return new ResponseDTO(LocalDateTime.now(), exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseDTO(LocalDate.now(), exception.getMessage(), HttpStatus.NOT_FOUND.value());
     }
 
     @ExceptionHandler(NotFoundStatusException.class)
     @ResponseBody
     public ResponseDTO notFoundStatusException(NotFoundStatusException exception) {
-        return new ResponseDTO(LocalDateTime.now(), exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseDTO(LocalDate.now(), exception.getMessage(), HttpStatus.NOT_FOUND.value());
     }
 }

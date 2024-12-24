@@ -9,6 +9,7 @@ import com.tuaev.task.repository.TaskRepository;
 import com.tuaev.task.util.mapper.TaskDTOMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,6 +43,7 @@ class DefaultTaskServiceTest {
         tasks.add(task);
     }
 
+    @DisplayName("Проверка того, что метод сохраняет нужную сущность")
     @Test
     void saveTest() {
         Mockito.when(userService.findById(1L)).thenReturn(user);
@@ -64,7 +66,6 @@ class DefaultTaskServiceTest {
         defaultTaskService.deleteById(1L);
         Mockito.verify(taskRepository).deleteById(1L);
     }
-
 
     @Test
     void updateByIdTest() {
