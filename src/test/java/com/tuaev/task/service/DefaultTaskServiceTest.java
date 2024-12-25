@@ -9,7 +9,6 @@ import com.tuaev.task.repository.TaskRepository;
 import com.tuaev.task.util.mapper.TaskDTOMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,9 +42,8 @@ class DefaultTaskServiceTest {
         tasks.add(task);
     }
 
-    @DisplayName("Проверка того, что метод сохраняет нужную сущность")
     @Test
-    void saveTest() {
+    void shouldSaveTaskAndSendMessageToKafkaWhenSaveTask() {
         Mockito.when(userService.findById(1L)).thenReturn(user);
         Mockito.when(taskRepository.save(Mockito.any(Task.class))).thenReturn(task);
         TaskDTO taskDTO = defaultTaskService.save(TaskDTOMapper.toTaskDTO(task));
@@ -61,14 +59,14 @@ class DefaultTaskServiceTest {
     }
 
     @Test
-    void deleteByIdTest() {
+    void shouldCallDeleteByIdRepositoryWhenDeleteTaskById() {
         Mockito.doNothing().when(taskRepository).deleteById(1L);
         defaultTaskService.deleteById(1L);
         Mockito.verify(taskRepository).deleteById(1L);
     }
 
     @Test
-    void updateByIdTest() {
+    void shouldUpdateTaskAndNotifyKafkaWhenUpdateTaskById() {
         Mockito.when(taskRepository.findById(1L)).thenReturn(Optional.ofNullable(task));
         task.setStatus(TaskStatus.AT_WORK.getValue());
         TaskDTO taskDTO = defaultTaskService.updateById(1L, TaskDTOMapper.toTaskDTO(task));
@@ -83,14 +81,14 @@ class DefaultTaskServiceTest {
     }
 
     @Test
-    void updateByIdNotFoundTaskExceptionOrFindByIdNotFountTaskExceptionTest() {
+    void shouldThrowNotFoundTaskExceptionWhenFindTaskByIdNotFound() {
         Mockito.when(taskRepository.findById(2L)).thenThrow(new NotFoundTaskException());
         Assertions.assertThatThrownBy(() -> defaultTaskService.findById(2L))
                 .isInstanceOf(NotFoundTaskException.class);
     }
 
     @Test
-    void findByIdTest() {
+    void shouldReturnTaskWithCorrectValuesWhenGetTaskByIdFromService() {
         Mockito.when(taskRepository.findById(1L)).thenReturn(Optional.ofNullable(task));
         TaskDTO taskDTO = defaultTaskService.findById(1L);
         Assertions.assertThat(taskDTO)
@@ -100,7 +98,7 @@ class DefaultTaskServiceTest {
     }
 
     @Test
-    void findAllTest() {
+    void shouldReturnCorrectListOfTasksWhenFindAll() {
         Mockito.when(taskRepository.findAll()).thenReturn(tasks);
         List<TaskDTO> resultTest = defaultTaskService.findAll();
         Assertions.assertThat(resultTest).hasSize(tasks.size());

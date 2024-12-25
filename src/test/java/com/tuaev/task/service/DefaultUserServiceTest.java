@@ -30,14 +30,14 @@ class DefaultUserServiceTest {
     }
 
     @Test
-    void findUserByIdTest() {
+    void shouldReturnExistingUserWhenFindUserById() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         Optional<User> optionalUser = Optional.ofNullable(defaultUserService.findById(1L));
         Assertions.assertThat(optionalUser).isPresent().contains(user);
     }
 
     @Test
-    void findUserByIdUserNotFoundExceptionTest() {
+    void shouldThrowNotFoundUserExceptionWhenFindNonExistentUser() {
         when(userRepository.findById(2L)).thenThrow(new NotFoundUserException());
         Assertions.assertThatThrownBy(() -> defaultUserService.findById(2L))
                 .isInstanceOf(NotFoundUserException.class);

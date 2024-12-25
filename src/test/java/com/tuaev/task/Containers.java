@@ -12,11 +12,11 @@ import org.testcontainers.utility.DockerImageName;
 public class Containers {
 
     @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer =
+    private static PostgreSQLContainer<?> postgreSQLContainer =
             new PostgreSQLContainer<>("postgres:16");
     @Container
-    private static final KafkaContainer kafka = new KafkaContainer(
-            DockerImageName.parse("confluentinc/cp-kafka:7.5.1"));
+    private static KafkaContainer kafka =
+            new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.1"));
 
     @DynamicPropertySource
     public static void setProperties(DynamicPropertyRegistry registry) {

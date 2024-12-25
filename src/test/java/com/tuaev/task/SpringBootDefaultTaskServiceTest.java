@@ -6,8 +6,7 @@ import com.tuaev.task.dto.TaskDTO;
 import com.tuaev.task.service.KafkaProducerService;
 import com.tuaev.task.service.TaskService;
 import com.tuaev.task.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,6 +23,7 @@ import java.time.LocalDate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class SpringBootDefaultTaskServiceTest extends Containers {
 
     @Autowired
@@ -43,14 +43,10 @@ class SpringBootDefaultTaskServiceTest extends Containers {
                 .sendMessage(Mockito.any());
     }
 
+    @Order(4)
     @Test
-    void findByIdTest() throws Exception {
-        TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setTitle("Домашнее задание");
-        taskDTO.setDescription("Написать модульные и интеграционные тесты");
-        taskDTO.setStatus(TaskStatus.CREATED.getValue());
-        taskService.save(taskDTO);
-        taskDTO = taskService.findById(1L);
+    void shouldGetTaskWithCorrectValuesWhenGetTaskById() throws Exception {
+        TaskDTO taskDTO = taskService.findById(1L);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/tasks/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -65,8 +61,9 @@ class SpringBootDefaultTaskServiceTest extends Containers {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.user.age").value(taskDTO.getUser().getAge()));
     }
 
+    @Order(6)
     @Test
-    void deleteById() throws Exception {
+    void shouldDeleteTaskByIdAndReturnOkResponse() throws Exception {
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setTitle("Домашнее задание");
         taskDTO.setDescription("Написать модульные и интеграционные тесты");
@@ -76,8 +73,9 @@ class SpringBootDefaultTaskServiceTest extends Containers {
                 .delete("/api/v1/tasks/1")).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Order(1)
     @Test
-    void saveTest() throws Exception {
+    void shouldSaveTaskWithCorrectValuesAndReturnSavedTaskWhenPostTask() throws Exception {
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setTitle("Домашнее задание");
         taskDTO.setDescription("Написать модульные и интеграционные тесты");
@@ -100,14 +98,10 @@ class SpringBootDefaultTaskServiceTest extends Containers {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.user.age").value(taskDTO.getUser().getAge()));
     }
 
+    @Order(2)
     @Test
-    void notFoundTaskException() throws Exception {
+    void shouldReturnNotFoundResponseWithCorrectDetailsWhenGetTaskNotFound() throws Exception {
         ResponseDTO responseDTO = new ResponseDTO(LocalDate.now(), "Задача не найдена", HttpStatus.NOT_FOUND.value());
-        TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setTitle("Домашнее задание");
-        taskDTO.setDescription("Написать модульные и интеграционные тесты");
-        taskDTO.setStatus(TaskStatus.CREATED.getValue());
-        taskService.save(taskDTO);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/tasks/2").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -116,21 +110,20 @@ class SpringBootDefaultTaskServiceTest extends Containers {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(responseDTO.getMessage()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value(responseDTO.getHttpStatus()));
     }
-
+    @Order(3)
     @Test
-    void updateByIdTest() throws Exception {
-        TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setTitle("Домашнее задание");
-        taskDTO.setDescription("Написать модульные и интеграционные тесты");
-        taskDTO.setStatus(TaskStatus.CREATED.getValue());
-        taskService.save(taskDTO);
-        taskDTO.setStatus(TaskStatus.AT_WORK.getValue());
+    void shouldUpdateTaskWhenPutTaskWithCorrectValues() throws Exception {
+        TaskDTO updateStatusTaskDTO = new TaskDTO();
+        updateStatusTaskDTO.setTitle("Домашнее задание");
+        updateStatusTaskDTO.setDescription("Написать модульные и интеграционные тесты");
+        updateStatusTaskDTO.setStatus(TaskStatus.AT_WORK.getValue());
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/tasks/1").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(taskDTO)))
+                        .content(objectMapper.writeValueAsString(updateStatusTaskDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
-        taskDTO = taskService.findById(1L);
+        TaskDTO taskDTO = taskService.findById(1L);
+        taskDTO.setStatus(updateStatusTaskDTO.getStatus());
         resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(taskDTO.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(taskDTO.getTitle()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(taskDTO.getDescription()))
@@ -141,14 +134,10 @@ class SpringBootDefaultTaskServiceTest extends Containers {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.user.age").value(taskDTO.getUser().getAge()));
     }
 
+    @Order(4)
     @Test
-    void findAllTest() throws Exception {
-        TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setTitle("Домашнее задание");
-        taskDTO.setDescription("Написать модульные и интеграционные тесты");
-        taskDTO.setStatus(TaskStatus.CREATED.getValue());
-        taskService.save(taskDTO);
-        taskDTO = taskService.findById(1L);
+    void shouldReturnListWithExistingTaskWhenGetAllTasks() throws Exception {
+        TaskDTO taskDTO = taskService.findById(1L);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/tasks")
                         .contentType(MediaType.APPLICATION_JSON))
