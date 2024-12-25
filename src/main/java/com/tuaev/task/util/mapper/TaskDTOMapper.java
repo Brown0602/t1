@@ -6,10 +6,9 @@ import com.tuaev.task.entity.Task;
 public class TaskDTOMapper {
 
     private TaskDTOMapper() {
-
     }
 
     public static TaskDTO toTaskDTO(Task task) {
-        return new TaskDTO(task.getId(), task.getTitle(), task.getDescription(), task.getStatus(), task.getUser());
+        return new TaskDTO(task.getId(), task.getTitle(), task.getDescription(), task.getStatus(), UserDTOMapper.toUserDTO(task.getUser()));
     }
 }
